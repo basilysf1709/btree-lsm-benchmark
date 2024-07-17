@@ -44,7 +44,7 @@ int main() {
     cout << "B-Tree Search Time: " << duration.count() << " ms" << endl;
 
     // Benchmark LSM Tree
-    LSMTree lsmTree(10000);  // LSM Tree with memtable limit 100
+    LSMTree lsmTree(100);  // LSM Tree with memtable limit 100
 
     start = high_resolution_clock::now();
     for (int key : keys) {
