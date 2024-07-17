@@ -1,26 +1,66 @@
 #include "BTree.h"
+#include "LSMTree.h"
+#include <chrono>
+#include <iostream>
+#include <random>
+
+using namespace std;
+using namespace std::chrono;
+
+// Function to generate random integer keys
+vector<int> generateRandomKeys(int numKeys, int maxValue) {
+    vector<int> keys(numKeys);
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(1, maxValue);
+    for (int i = 0; i < numKeys; ++i) {
+        keys[i] = dis(gen);
+    }
+    return keys;
+}
 
 int main() {
-    BTree<int> t(3);  // A B-Tree with minimum degree 3
+    const int numKeys = 10000;
+    const int maxValue = 100000;
+    vector<int> keys = generateRandomKeys(numKeys, maxValue);
 
-    t.insert(10);
-    t.insert(20);
-    t.insert(5);
-    t.insert(6);
-    t.insert(12);
-    t.insert(30);
-    t.insert(7);
-    t.insert(17);
+    // Benchmark B-Tree
+    BTree<int> btree(3);  // B-Tree with minimum degree 3
 
-    std::cout << "Traversal of the constructed tree is ";
-    t.traverse();
-    std::cout << std::endl;
+    auto start = high_resolution_clock::now();
+    for (int key : keys) {
+        btree.insert(key);
+    }
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(end - start);
+    cout << "B-Tree Insertion Time: " << duration.count() << " ms" << endl;
 
-    int k = 6;
-    (t.search(k) != nullptr) ? std::cout << "\nPresent" : std::cout << "\nNot Present\n";
+    start = high_resolution_clock::now();
+    for (int key : keys) {
+        btree.search(key);
+    }
+    end = high_resolution_clock::now();
+    duration = duration_cast<milliseconds>(end - start);
+    cout << "B-Tree Search Time: " << duration.count() << " ms" << endl;
 
-    k = 15;
-    (t.search(k) != nullptr) ? std::cout << "\nPresent" : std::cout << "\nNot Present\n";
+    // Benchmark LSM Tree
+    LSMTree lsmTree(10000);  // LSM Tree with memtable limit 100
+
+    start = high_resolution_clock::now();
+    for (int key : keys) {
+        lsmTree.put(key, to_string(key));
+    }
+    end = high_resolution_clock::now();
+    duration = duration_cast<milliseconds>(end - start);
+    cout << "LSM Tree Insertion Time: " << duration.count() << " ms" << endl;
+
+    start = high_resolution_clock::now();
+    for (int key : keys) {
+        lsmTree.get(key);
+    }
+    end = high_resolution_clock::now();
+    duration = duration_cast<milliseconds>(end - start);
+    cout << "LSM Tree Search Time: " << duration.count() << " ms" << endl;
 
     return 0;
 }

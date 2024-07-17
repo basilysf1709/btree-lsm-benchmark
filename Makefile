@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -O2
 
-TARGET = lsm_tree_app
+TARGET = benchmark_app
 SOURCES = main.cpp LSMTree.cpp SSTable.cpp BTree.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 
