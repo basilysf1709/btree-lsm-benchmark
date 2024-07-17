@@ -1,18 +1,26 @@
-#include "LSMTree.h"
-#include <iostream>
+#include "BTree.h"
 
 int main() {
-    LSMTree lsm;
+    BTree<int> t(3);  // A B-Tree with minimum degree 3
 
-    // Simulate inserts
-    for (int i = 0; i < 25; ++i) {
-        lsm.put(i, "value " + std::to_string(i));
-    }
+    t.insert(10);
+    t.insert(20);
+    t.insert(5);
+    t.insert(6);
+    t.insert(12);
+    t.insert(30);
+    t.insert(7);
+    t.insert(17);
 
-    // Test lookups
-    std::cout << "Get key 5: " << lsm.get(5) << std::endl;
-    std::cout << "Get key 20: " << lsm.get(20) << std::endl;
-    std::cout << "Get key 30: " << lsm.get(30) << std::endl;
+    std::cout << "Traversal of the constructed tree is ";
+    t.traverse();
+    std::cout << std::endl;
+
+    int k = 6;
+    (t.search(k) != nullptr) ? std::cout << "\nPresent" : std::cout << "\nNot Present\n";
+
+    k = 15;
+    (t.search(k) != nullptr) ? std::cout << "\nPresent" : std::cout << "\nNot Present\n";
 
     return 0;
 }
