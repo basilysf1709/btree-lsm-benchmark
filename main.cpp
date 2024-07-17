@@ -19,10 +19,22 @@ vector<int> generateRandomKeys(int numKeys, int maxValue) {
     return keys;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     const int numKeys = 10000;
     const int maxValue = 100000;
     vector<int> keys = generateRandomKeys(numKeys, maxValue);
+
+    // Check for the command line argument for memtable size
+    if (argc < 2) {
+        cerr << "Usage: " << argv[0] << " <memtable_size>" << endl;
+        return 1;
+    }
+
+    int memtableSize = std::atoi(argv[1]);
+    if (memtableSize <= 0) {
+        cerr << "Invalid memtable size. Please provide a positive integer." << endl;
+        return 1;
+    }
 
     // Benchmark B-Tree
     BTree<int> btree(3);  // B-Tree with minimum degree 3
@@ -44,7 +56,7 @@ int main() {
     cout << "B-Tree Search Time: " << duration.count() << " ms" << endl;
 
     // Benchmark LSM Tree
-    LSMTree lsmTree(100);  // LSM Tree with memtable limit 100
+    LSMTree lsmTree(memtableSize);  // LSM Tree with memtable limit 100
 
     start = high_resolution_clock::now();
     for (int key : keys) {
