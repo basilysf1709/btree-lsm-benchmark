@@ -84,7 +84,7 @@ void BTreeNode<T>::splitChild(int i, BTreeNode<T>* y) {
 }
 
 template <typename T>
-BTree<T>::BTree(int _t) : t(_t), root(nullptr) {}
+BTree<T>::BTree(int _t) : root(nullptr), t(_t) {}
 
 template <typename T>
 void BTree<T>::traverse() {
