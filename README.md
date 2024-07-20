@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project implements and compares the performance of B-Trees and Log-Structured Merge (LSM) Trees. B-Trees are commonly used for indexing in databases due to their efficient in-memory operations. LSM Trees, on the other hand, optimize write performance for large datasets by periodically flushing data from memory to disk in the form of SSTables.
+This project implements and compares the performance of B-Trees and Log-Structured Merge (LSM) Trees. B-Trees are commonly used in SQL Databases. LSM Trees, on the other hand, optimize write performance for large datasets by periodically flushing data from memory to disk in the form of SSTables and they are more common in NoSQL Databases.
 
 ## Project Structure
 
@@ -39,7 +39,7 @@ make clean
 To run the compiled program, use the following command:
 
 ```bash
-./benchmark_program
+./benchmark_program 10000
 ```
 
 ## Benchmark Results
